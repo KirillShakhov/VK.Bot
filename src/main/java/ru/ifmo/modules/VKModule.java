@@ -6,10 +6,10 @@ import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.queries.messages.MessagesGetLongPollHistoryQuery;
-import ru.ifmo.models.ResponseMessage;
-import ru.ifmo.interfaces.IRequestModule;
+import ru.ifmo.models.DontGetMessage;
+import ru.ifmo.models.Message;
+import ru.ifmo.models.interfaces.IRequestModule;
 
 import java.util.List;
 
@@ -32,45 +32,56 @@ public class VKModule implements IRequestModule {
     public VkApiClient getVk() {
         return vk;
     }
-    public Message getMessage() throws ClientException, ApiException {
-        MessagesGetLongPollHistoryQuery eventsQuery = vk.messages()
-                .getLongPollHistory(actor)
-                .ts(ts);
-        if (maxMsgId > 0){
-            eventsQuery.maxMsgId(maxMsgId);
-        }
-        List<Message> messages = eventsQuery
-                .execute()
-                .getMessages()
-                .getMessages();
-
-        if (!messages.isEmpty()){
-            try {
-                ts =  vk.messages()
-                        .getLongPollServer(actor)
-                        .execute()
-                        .getTs();
-            } catch (ClientException e) {
-                e.printStackTrace();
+    public Message getMessage() throws DontGetMessage {
+        try {
+            MessagesGetLongPollHistoryQuery eventsQuery = vk.messages()
+                    .getLongPollHistory(actor)
+                    .ts(ts);
+            if (maxMsgId > 0) {
+                eventsQuery.maxMsgId(maxMsgId);
             }
-        }
-        if (!messages.isEmpty() && !messages.get(0).isOut()) {
+            List<com.vk.api.sdk.objects.messages.Message> messages = eventsQuery
+                    .execute()
+                    .getMessages()
+                    .getMessages();
+
+            if (!messages.isEmpty()) {
+                try {
+                    ts = vk.messages()
+                            .getLongPollServer(actor)
+                            .execute()
+                            .getTs();
+                } catch (ClientException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!messages.isEmpty() && !messages.get(0).isOut()) {
                 /*
                 messageId - максимально полученный ID, нужен, чтобы не было ошибки 10 internal server error,
                 который является ограничением в API VK. В случае, если ts слишком старый (больше суток),
                 а max_msg_id не передан, метод может вернуть ошибку 10 (Internal server error).
                  */
-            int messageId = messages.get(0).getId();
-            if (messageId > maxMsgId){
-                maxMsgId = messageId;
-            }
+                int messageId = messages.get(0).getId();
+                if (messageId > maxMsgId) {
+                    maxMsgId = messageId;
+                }
 
-            return messages.get(0);
+                return toMessage(messages.get(0));
+            }
+            return null;
         }
-        return null;
+        catch (Exception e){
+            throw new DontGetMessage(e.getMessage());
+        }
     }
 
-    public void sendMessage(ResponseMessage message){
+    private Message toMessage(com.vk.api.sdk.objects.messages.Message message) {
+        Message res = new Message(message.getBody(), message.getUserId());
+        res.setPhoto(message.getPhoto50());
+        return res;
+    }
+
+    public void sendMessage(Message message){
         if (message == null){
             System.out.println("null");
             return;

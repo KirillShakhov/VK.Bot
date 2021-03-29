@@ -1,14 +1,19 @@
 package ru.ifmo;
 
-import ru.ifmo.interfaces.IServer;
-
+import ru.ifmo.models.interfaces.IModule;
+import ru.ifmo.models.interfaces.IServer;
+import ru.ifmo.modules.BaseCommandModule;
 import java.util.HashSet;
 
 public class ServerManager implements Runnable {
     private HashSet<IServer> servers;
     public void init(HashSet<IServer> servers) {
+        HashSet<IModule> m = new HashSet<>();
+        m.add(new BaseCommandModule());
+        int i = 1;
         for(IServer server : servers){
-            server.init();
+            server.init(m);
+            System.out.println("Loaded module("+(i++)+"/"+servers.size()+")");
         }
         this.servers = servers;
     }

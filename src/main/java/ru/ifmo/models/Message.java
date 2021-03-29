@@ -1,12 +1,13 @@
 package ru.ifmo.models;
 
-public class ResponseMessage {
+public class Message {
     private String text;
     private String photo;
     private int peerId;
 
-    public ResponseMessage(String text) {
+    public Message(String text, int peerId) {
         this.text = text;
+        this.peerId = peerId;
     }
 
     public String getPhoto() {

@@ -1,6 +1,6 @@
 package ru.ifmo;
 
-import ru.ifmo.interfaces.IServer;
+import ru.ifmo.models.interfaces.IServer;
 import ru.ifmo.servers.MainServer;
 
 import java.util.HashSet;
