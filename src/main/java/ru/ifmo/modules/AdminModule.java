@@ -14,7 +14,15 @@ public class AdminModule implements IModule{
             cookies.push(message.getPeerId(), "/admin");
         }
         if(cookies.getTop(message.getPeerId()).equalsIgnoreCase("/admin")){
-            return new Message("Команды: /add_server", message.getPeerId());
+            switch (message.getText().toLowerCase()){
+                case "/exit":
+                    cookies.removeLast(message.getPeerId());
+                    return new Message("Выход из админ панели", message.getPeerId());
+                case "/add_server":
+                    return new Message("В разработке... Введите /exit", message.getPeerId());
+                default:
+                    return new Message("Команды: /add_server, /exit", message.getPeerId());
+            }
         }
         return null;
     }

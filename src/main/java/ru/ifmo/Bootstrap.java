@@ -17,7 +17,7 @@ public class Bootstrap {
             ServerManager serverManager = new ServerManager();
             System.out.println("Loading Module...");
             serverManager.init(servers);
-            System.out.println("Servers starts. \\/");
+            System.out.println("Servers starts. /\\");
             //Run
             Executors.newCachedThreadPool().execute(serverManager);
             while(true){
@@ -25,7 +25,7 @@ public class Bootstrap {
                     String line = scanner.nextLine();
                     switch (line){
                         case "exit":
-                            System.out.println("Завершение работы");
+                            System.out.println("Servers down. \\/");
                             serverManager.stop();
                             System.exit(0);
                             break;

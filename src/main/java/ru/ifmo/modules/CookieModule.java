@@ -9,7 +9,12 @@ public class CookieModule{
 
     public CookieModule(){}
     public String getTop(Integer id){
-        return cookies.get(id).peek();
+        if(!cookies.containsKey(id))cookies.put(id, new Stack<>());
+        try {
+            return cookies.get(id).peek();
+        }catch (Exception e){
+            return "";
+        }
     }
     public void push(Integer id, String s){
         if(!cookies.containsKey(id))cookies.put(id, new Stack<>());

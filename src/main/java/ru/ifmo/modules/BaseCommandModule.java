@@ -12,16 +12,15 @@ public class BaseCommandModule implements IModule {
     @Override
     public Message getAnswer(Message message, CookieModule cookies) {
         for(ICommand command : commands){
-            if(command.execute(message) != null){
-                Message answer = command.execute(message);
-                answer.setPeerId(message.getPeerId());
-                return answer;
+            if(command.execute(message.getText()) != null){
+                String answer = command.execute(message.getText());
+                return new Message(answer, message.getPeerId());
             }
         }
         return null;
     }
 
-    void addCommand(ICommand command){
+    public void addCommand(ICommand command){
         this.commands.add(command);
     }
 }
