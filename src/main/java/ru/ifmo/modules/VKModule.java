@@ -12,8 +12,10 @@ import ru.ifmo.models.Message;
 import ru.ifmo.models.interfaces.IRequestModule;
 
 import java.util.List;
+import java.util.Random;
 
 public class VKModule implements IRequestModule {
+    private final Random random = new Random();
     private VkApiClient vk;
     private static int ts;
     private GroupActor actor;
@@ -42,8 +44,7 @@ public class VKModule implements IRequestModule {
             }
             List<com.vk.api.sdk.objects.messages.Message> messages = eventsQuery
                     .execute()
-                    .getMessages()
-                    .getMessages();
+                    .getMessages().getItems();
 
             if (!messages.isEmpty()) {
                 try {
@@ -76,8 +77,8 @@ public class VKModule implements IRequestModule {
     }
 
     private Message toMessage(com.vk.api.sdk.objects.messages.Message message) {
-        Message res = new Message(message.getBody(), message.getUserId());
-        res.setPhoto(message.getPhoto50());
+        Message res = new Message(message.getText(), message.getPeerId());
+        res.setPhoto(message.getAttachments().toString());
         return res;
     }
 
@@ -87,7 +88,7 @@ public class VKModule implements IRequestModule {
             return;
         }
         try {
-            vk.messages().send(this.actor).peerId(message.getPeerId()).message(message.getText()).execute();
+            vk.messages().send(this.actor).peerId(message.getPeerId()).message(message.getText()).randomId(random.nextInt()).execute();
         } catch (ApiException | ClientException e) {
             e.printStackTrace();
         }
