@@ -24,10 +24,19 @@ public class Bootstrap {
                 if(scanner.hasNext()){
                     String line = scanner.nextLine();
                     switch (line){
-                        case "exit":
+                        case "/exit":
                             System.out.println("Servers down. \\/");
                             serverManager.stop();
                             System.exit(0);
+                            break;
+                        case "/servers":
+                            System.out.println("Серверов: " + servers.size());
+                            break;
+                        case "/help":
+                            System.out.println("/servers - количество серверов\n/exit - завершение работы");
+                            break;
+                        default:
+                            System.out.println("Введите /help");
                             break;
                     }
                 }
