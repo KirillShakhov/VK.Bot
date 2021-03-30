@@ -2,14 +2,10 @@ package ru.ifmo.servers;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import ru.ifmo.models.Message;
-import ru.ifmo.models.interfaces.IModule;
 import ru.ifmo.modules.AdminModule;
 import ru.ifmo.modules.BaseCommandModule;
 import ru.ifmo.modules.VKModule;
 import ru.ifmo.models.interfaces.IServer;
-
-import java.util.Locale;
 
 
 public class MainServer extends Server implements IServer {
