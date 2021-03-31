@@ -1,14 +1,14 @@
 package ru.ifmo;
 
-import ru.ifmo.server.Server;
+import ru.ifmo.models.TokenServer;
 
 import java.util.HashSet;
 
 public class ServerManager implements Runnable {
-    private HashSet<Server> servers;
-    public void init(HashSet<Server> servers) {
+    private HashSet<TokenServer> servers;
+    public void init(HashSet<TokenServer> servers) {
         int i = 1;
-        for(Server server : servers){
+        for(TokenServer server : servers){
             System.out.println("Loaded module("+(i++)+"/"+servers.size()+")");
         }
         this.servers = servers;
@@ -21,7 +21,7 @@ public class ServerManager implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            for(Server server : servers){
+            for(TokenServer server : servers){
                 try {
                     server.execute();
                 }catch (Exception e){

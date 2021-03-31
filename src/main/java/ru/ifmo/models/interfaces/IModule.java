@@ -6,4 +6,5 @@ public interface IModule {
     Message getAnswer(Message message);
     String getPerformance();
     void setPerformance(String s);
+    String toString();
 }

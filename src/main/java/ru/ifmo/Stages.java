@@ -2,14 +2,13 @@ package ru.ifmo;
 
 import ru.ifmo.models.DataModule;
 import ru.ifmo.models.TokenServer;
-import ru.ifmo.server.Server;
 
 import java.util.HashSet;
 import java.util.concurrent.Executors;
 
 public class Stages {
     static HashSet<Runnable> otherModules = new HashSet<>();
-    static HashSet<Server> servers = new HashSet<>();
+    static HashSet<TokenServer> servers = new HashSet<>();
     static ServerManager serverManager = new ServerManager();
 
 
@@ -17,7 +16,7 @@ public class Stages {
         otherModules.add(module);
     }
 
-    public static void add_server(Server server){
+    public static void add_server(TokenServer server){
         servers.add(server);
     }
     public static void testing_modules() {
@@ -54,5 +53,13 @@ public class Stages {
         for(Runnable module : otherModules){
             Executors.newCachedThreadPool().execute(module);
         }
+    }
+
+    public static HashSet<TokenServer> getServers() {
+        return servers;
+    }
+
+    public static void setServers(HashSet<TokenServer> servers) {
+        Stages.servers = servers;
     }
 }

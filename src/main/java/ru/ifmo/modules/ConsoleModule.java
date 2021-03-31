@@ -1,6 +1,7 @@
-package ru.ifmo;
+package ru.ifmo.modules;
 
-import ru.ifmo.server.Server;
+import ru.ifmo.Stages;
+import ru.ifmo.models.TokenServer;
 
 import java.util.Scanner;
 
@@ -17,8 +18,8 @@ public class ConsoleModule implements Runnable{
                         System.exit(0);
                         break;
                     case "/servers":
-                        System.out.println("Серверов: " + Stages.servers.size());
-                        for(Server server : Stages.servers){
+                        System.out.println("Серверов: " + Stages.getServers().size());
+                        for(TokenServer server : Stages.getServers()){
                             System.out.println(server.toString());
                         }
                         break;

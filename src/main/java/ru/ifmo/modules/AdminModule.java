@@ -41,4 +41,9 @@ public class AdminModule implements IModule{
     @Override
     public void setPerformance(String s) {
     }
+
+    @Override
+    public String toString() {
+        return "AdminModule";
+    }
 }
