@@ -1,4 +1,4 @@
-package ru.ifmo.modules;
+package ru.ifmo.command_modules;
 
 import ru.ifmo.models.Message;
 import ru.ifmo.models.interfaces.ICommand;
@@ -10,6 +10,7 @@ public class BaseCommandModule implements IModule {
 
     @Override
     public Message getAnswer(Message message) {
+        //Администрирование
         for(ICommand command : commands){
             if(command.execute(message.getText()) != null){
                 message.setText(command.execute(message.getText()));

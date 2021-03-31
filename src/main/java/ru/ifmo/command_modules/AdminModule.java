@@ -1,4 +1,4 @@
-package ru.ifmo.modules;
+package ru.ifmo.command_modules;
 
 import ru.ifmo.models.Message;
 import ru.ifmo.models.interfaces.IModule;
