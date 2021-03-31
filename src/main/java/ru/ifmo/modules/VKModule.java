@@ -15,14 +15,12 @@ import java.util.List;
 import java.util.Random;
 
 public class VKModule implements IRequestModule {
+    //TODO refactor
     private final Random random = new Random();
     private VkApiClient vk;
     private int ts;
     private GroupActor actor;
     private int maxMsgId = -1;
-    static {
-
-    }
 
     public VKModule(String access_token, String groupId) throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();

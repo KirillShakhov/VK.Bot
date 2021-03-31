@@ -19,6 +19,15 @@ public class BaseCommandModule implements IModule {
         return null;
     }
 
+    @Override
+    public String getPerformance() {
+        return null;
+    }
+
+    @Override
+    public void setPerformance(String s) {
+    }
+
     public void addCommand(ICommand command){
         this.commands.add(command);
     }

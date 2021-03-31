@@ -32,4 +32,13 @@ public class AdminModule implements IModule{
         }
         return null;
     }
+
+    @Override
+    public String getPerformance() {
+        return "";
+    }
+
+    @Override
+    public void setPerformance(String s) {
+    }
 }

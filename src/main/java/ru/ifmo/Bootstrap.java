@@ -13,18 +13,15 @@ import java.util.HashSet;
 public class Bootstrap {
     public static HashSet<IModule> modules = new HashSet<>();
     public static void main(String[] args) {
-
         //Config
         Stages.add_otherModule(new ConsoleModule());
+        //распределительный модуль
+
+        //Add Servers
         try {
             String token = "940b6044164b91beec0001825b85784168ffba9ba115d40bc3c548f9c76de698c21f33f2d57e783f27463";
             String group_id = "144561009";
             Server server1 = new Server(new VKModule(token, group_id));
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             String token2 = "f5c685e72504f75ae5d13ffba306a9e7bb9a2382dbe0492a525e7381555a63c03848d2e4239eadb8f51ec";
             String group_id2 = "150386938";
             Server server2 = new Server(new VKModule(token2, group_id2));
