@@ -3,6 +3,7 @@ package ru.ifmo.models;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ru.ifmo.HibernateSessionFactoryUtil;
+import ru.ifmo.server.Server;
 
 import java.util.List;
 
@@ -41,7 +42,20 @@ public class TokenServerDao {
     }
 
     public List<TokenServer> findAll() {
-        List<TokenServer> users = (List<TokenServer>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From TokenServer").list();
-        return users;
+        List<TokenServer> tokenServer = (List<TokenServer>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From TokenServer").list();
+        return tokenServer;
+    }
+
+    void saveServer(Server server){
+        TokenServer tokenServer = new TokenServer();
+        tokenServer.setToken("");
+
+
+
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.save(tokenServer);
+        tx1.commit();
+        session.close();
     }
 }

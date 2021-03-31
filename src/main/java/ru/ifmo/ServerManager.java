@@ -1,15 +1,14 @@
 package ru.ifmo;
 
-import ru.ifmo.models.interfaces.IModule;
-import ru.ifmo.models.interfaces.IServer;
-import ru.ifmo.modules.BaseCommandModule;
+import ru.ifmo.server.Server;
+
 import java.util.HashSet;
 
 public class ServerManager implements Runnable {
-    private HashSet<IServer> servers;
-    public void init(HashSet<IServer> servers) {
+    private HashSet<Server> servers;
+    public void init(HashSet<Server> servers) {
         int i = 1;
-        for(IServer server : servers){
+        for(Server server : servers){
             System.out.println("Loaded module("+(i++)+"/"+servers.size()+")");
         }
         this.servers = servers;
@@ -22,7 +21,7 @@ public class ServerManager implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            for(IServer server : servers){
+            for(Server server : servers){
                 try {
                     server.execute();
                 }catch (Exception e){

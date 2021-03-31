@@ -2,6 +2,7 @@ package ru.ifmo.models;
 
 public class Message {
     private String text;
+    private String lastAnswer;
     private String photo;
     private int peerId;
 
@@ -32,5 +33,13 @@ public class Message {
 
     public void setPeerId(int peerId) {
         this.peerId = peerId;
+    }
+
+    public String getLastAnswer() {
+        return lastAnswer;
+    }
+
+    public void setLastAnswer(String lastAnswer) {
+        this.lastAnswer = lastAnswer;
     }
 }

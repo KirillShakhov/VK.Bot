@@ -3,25 +3,31 @@ package ru.ifmo.modules;
 import ru.ifmo.models.Message;
 import ru.ifmo.models.interfaces.IModule;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class AdminModule implements IModule{
     HashSet<String> admins = new HashSet<>();
+    private Map<Integer, String> cookies = new HashMap<>();
 
     @Override
-    public Message getAnswer(Message message, CookieModule cookies) {
+    public Message getAnswer(Message message) {
         if(message.getText().equalsIgnoreCase("/admin")){
-            cookies.push(message.getPeerId(), "/admin");
+            message.setLastAnswer("/admin");
         }
-        if(cookies.getTop(message.getPeerId()).equalsIgnoreCase("/admin")){
+        if(message.getLastAnswer().equalsIgnoreCase("/admin")){
             switch (message.getText().toLowerCase()){
                 case "/exit":
-                    cookies.removeLast(message.getPeerId());
-                    return new Message("Выход из админ панели", message.getPeerId());
+                    message.setLastAnswer("");
+                    message.setText("Выход из админ панели");
+                    return message;
                 case "/add_server":
-                    return new Message("В разработке... Введите /exit", message.getPeerId());
+                    message.setText("В разработке... Введите /exit");
+                    return message;
                 default:
-                    return new Message("Команды: /add_server, /exit", message.getPeerId());
+                    message.setText("Команды: /add_server, /exit");
+                    return message;
             }
         }
         return null;

@@ -1,6 +1,13 @@
 package ru.ifmo.models;
 
+import ru.ifmo.Bootstrap;
+import ru.ifmo.models.interfaces.IModule;
+import ru.ifmo.models.interfaces.IRequestModule;
+import ru.ifmo.modules.VKModule;
+import ru.ifmo.server.Server;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -12,6 +19,9 @@ public class TokenServer {
     private String name;
     private String token;
     private String group_id;
+    private String type;
+    @ElementCollection
+    private List<String> modules;
     @ElementCollection
     private List<String> owners;
 
@@ -56,6 +66,29 @@ public class TokenServer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Server initServer(){
+        try {
+            Server server = null;
+            if (type.equals("bsrv")) {
+                IRequestModule requestModule = new VKModule(token, group_id);
+                server = new Server(requestModule);
+                HashSet<IModule> m = new HashSet<>();
+                for (String s : modules) {
+                    for (IModule module : Bootstrap.modules) {
+                        if (module.toString().equals(s)) {
+                            m.add(module);
+                        }
+                    }
+                }
+                server.init(m);
+            }
+            return server;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
