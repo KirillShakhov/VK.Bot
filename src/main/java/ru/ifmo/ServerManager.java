@@ -1,18 +1,14 @@
 package ru.ifmo;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.ifmo.models.TokenServer;
 
 import java.util.HashSet;
 
 public class ServerManager implements Runnable {
-    private HashSet<TokenServer> servers;
-    public void init(HashSet<TokenServer> servers) {
-        int i = 1;
-        for(TokenServer server : servers){
-            System.out.println("Loaded module("+(i++)+"/"+servers.size()+")");
-        }
-        this.servers = servers;
-    }
+    @Setter @Getter
+    private HashSet<TokenServer> servers = new HashSet<>();
 
     public void run() {
         while (true){
@@ -33,6 +29,7 @@ public class ServerManager implements Runnable {
         }
     }
 
-    public void stop() {
+    public void addServer(TokenServer server){
+        this.servers.add(server);
     }
 }

@@ -34,6 +34,6 @@ public class BaseCommandModule implements IModule {
 
     @Override
     public String toString() {
-        return "base_command";
+        return "BaseCommandModule";
     }
 }

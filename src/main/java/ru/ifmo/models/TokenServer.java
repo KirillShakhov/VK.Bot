@@ -36,6 +36,10 @@ public class TokenServer {
     @Transient
     IRequestModule requestModule;
 
+    public TokenServer(){
+
+    }
+
     public TokenServer(String name, String token, String group_id) {
         this.name = name;
         this.token = token;

@@ -8,11 +8,11 @@ import java.util.List;
 
 public class TokenServerDao {
 
-    public TokenServer findById(int id) {
+    public static TokenServer findById(int id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(TokenServer.class, id);
     }
 
-    public void save(TokenServer server) {
+    public static void save(TokenServer server) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(server);
@@ -20,7 +20,7 @@ public class TokenServerDao {
         session.close();
     }
 
-    public void update(TokenServer user) {
+    public static void update(TokenServer user) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         session.update(user);
@@ -28,7 +28,7 @@ public class TokenServerDao {
         session.close();
     }
 
-    public void delete(TokenServer user) {
+    public static void delete(TokenServer user) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         session.delete(user);
@@ -36,21 +36,12 @@ public class TokenServerDao {
         session.close();
     }
 
-    public TokenServer findTokenById(int id) {
+    public static TokenServer findTokenById(int id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(TokenServer.class, id);
     }
 
-    public List<TokenServer> findAll() {
+    public static List<TokenServer> findAll() {
         List<TokenServer> tokenServer = (List<TokenServer>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From TokenServer").list();
         return tokenServer;
-    }
-
-    void saveServer(TokenServer server){
-        //TODO .
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(server);
-        tx1.commit();
-        session.close();
     }
 }
