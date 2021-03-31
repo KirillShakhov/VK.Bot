@@ -17,9 +17,12 @@ import java.util.Random;
 public class VKModule implements IRequestModule {
     private final Random random = new Random();
     private VkApiClient vk;
-    private static int ts;
+    private int ts;
     private GroupActor actor;
-    private static int maxMsgId = -1;
+    private int maxMsgId = -1;
+    static {
+
+    }
 
     public VKModule(String access_token, String groupId) throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();
