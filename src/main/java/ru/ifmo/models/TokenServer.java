@@ -2,7 +2,7 @@ package ru.ifmo.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.ifmo.models.interfaces.IModule;
+import ru.ifmo.models.interfaces.IServerModule;
 import ru.ifmo.models.interfaces.IRequestModule;
 import ru.ifmo.modules.ServerManagerModule;
 import ru.ifmo.modules.VKModule;
@@ -20,7 +20,7 @@ public class TokenServer {
     private int id;
     @Getter @Setter
     private String name;
-    @Setter
+    @Getter @Setter
     private String token;
     @Setter
     private String group_id;
@@ -29,12 +29,15 @@ public class TokenServer {
     @ElementCollection
     @Getter
     private final List<String> owners = new ArrayList<>();
+
+
     @Transient
-    HashSet<IModule> modules = new HashSet<>();
+    HashSet<IServerModule> modules = new HashSet<>();
     @Transient
     private final Map<Integer, String> cookies = new HashMap<>();
     @Transient
     IRequestModule requestModule;
+
 
     public TokenServer(){
 
@@ -59,7 +62,7 @@ public class TokenServer {
         try {
             requestModule = new VKModule(token, group_id);
             for (Map.Entry<String, String> entry : modules_str.entrySet()) {
-                for(IModule module : ServerManagerModule.getModules()){
+                for(IServerModule module : ServerManagerModule.getModules()){
                     if(module.toString().equals(entry.getKey())){
                         module.setPerformance(entry.getValue());
                         this.modules.add(module);
@@ -73,7 +76,7 @@ public class TokenServer {
     }
 
     public void destroy(){
-        for(IModule module : modules){
+        for(IServerModule module : modules){
             modules_str.put(module.toString(), module.getPerformance());
         }
     }
@@ -81,17 +84,16 @@ public class TokenServer {
     public void execute() throws DontGetMessage {
         Message message = requestModule.getMessage();
         if(message != null) {
-            if (cookies.get(message.getPeerId()) != null) {
-                message.setLastAnswer(cookies.get(message.getPeerId()));
-            }
+            if (cookies.get(message.getPeerId()) != null) message.setCookie(cookies.get(message.getPeerId()));
+            else message.setCookie("");
             Executors.newCachedThreadPool().execute(() -> requestModule.sendMessage(getAnswer(message)));
-            cookies.put(message.getPeerId(), message.getLastAnswer());
+            cookies.put(message.getPeerId(), message.getCookie());
         }
     }
 
     Message getAnswer(Message message){
         Message answer = null;
-        for(IModule module : modules){
+        for(IServerModule module : modules){
             answer = module.getAnswer(message);
         }
         if (answer != null) return answer;
@@ -101,7 +103,7 @@ public class TokenServer {
         }
     }
 
-    public void addModule(IModule module){
+    public void addModule(IServerModule module){
         this.modules.add(module);
     }
 

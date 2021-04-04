@@ -2,10 +2,11 @@ package ru.ifmo.modules;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.ifmo.command_modules.BaseCommandModule;
-import ru.ifmo.command_modules.TestAdminModule;
+import ru.ifmo.server_modules.AdminServerModule;
+import ru.ifmo.server_modules.BaseCommandServerModule;
+import ru.ifmo.server_modules.TestAdminServerModule;
 import ru.ifmo.models.TokenServer;
-import ru.ifmo.models.interfaces.IModule;
+import ru.ifmo.models.interfaces.IServerModule;
 
 import java.util.HashSet;
 
@@ -13,46 +14,24 @@ public class ServerManagerModule implements Runnable {
     @Setter @Getter
     private static HashSet<TokenServer> servers = new HashSet<>();
     @Getter
-    public static HashSet<IModule> modules = new HashSet<>();
+    public static HashSet<IServerModule> modules = new HashSet<>();
 
-    public static void restart() {
-        servers = new HashSet<>();
-        System.out.println("Restart server...");
-        System.out.println("Loading Modules...");
-        BaseCommandModule b = new BaseCommandModule();
-        b.addCommand(message -> message.equalsIgnoreCase("привет")?"Привет!":null);
-        modules.add(b);
-        modules.add(new TestAdminModule());
-        //
-        loading_database();
-        System.out.println("Servers starts. /\\");
-        //noinspection InfiniteLoopStatement
-        while (true) {
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            for (TokenServer server : servers) {
-                try {
-                    server.execute();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    servers.remove(server);
-                    System.out.println("Сервер вышел из строя");
-                }
-            }
-        }
+    public static void removeServerByID(int id) {
+        servers.removeIf(server -> server.getId() == id);
     }
 
+    public static TokenServer getServerByID(int id) {
+        return servers.stream().filter(server -> server.getId() == id).findFirst().orElse(null);
+    }
 
     public void run() {
         System.out.println("Running server...");
         System.out.println("Loading Modules...");
-        BaseCommandModule b = new BaseCommandModule();
+        BaseCommandServerModule b = new BaseCommandServerModule();
         b.addCommand(message -> message.equalsIgnoreCase("привет")?"Привет!":null);
         modules.add(b);
-        modules.add(new TestAdminModule());
+        modules.add(new TestAdminServerModule());
+        modules.add(new AdminServerModule());
         //
 
         loading_database();
@@ -81,14 +60,21 @@ public class ServerManagerModule implements Runnable {
         //BD
         System.out.println("Loading DB...");
         int size = DataBaseModule.findAll().size();
+        int i = 1;
         for(TokenServer server : DataBaseModule.findAll()){
             server.init();
-            System.out.println("Initialized Module("+server.getId()+"/"+ size +")");
             addServer(server);
+            System.out.println("Initialized Module("+(i++)+"/"+ size +")");
         }
     }
 
-    public static void addServer(TokenServer server){
+    public static boolean addServer(TokenServer server){
+        for(TokenServer s : servers){
+            if(s.getName().equals(server.getName()) || s.getToken().equals(server.getToken())){
+                return false;
+            }
+        }
         servers.add(server);
+        return true;
     }
 }

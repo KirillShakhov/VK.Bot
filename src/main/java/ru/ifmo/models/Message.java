@@ -2,7 +2,7 @@ package ru.ifmo.models;
 
 public class Message {
     private String text;
-    private String lastAnswer;
+    private String cookie;
     private String photo;
     private int peerId;
 
@@ -35,11 +35,11 @@ public class Message {
         this.peerId = peerId;
     }
 
-    public String getLastAnswer() {
-        return lastAnswer;
+    public String getCookie() {
+        return cookie;
     }
 
-    public void setLastAnswer(String lastAnswer) {
-        this.lastAnswer = lastAnswer;
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 }

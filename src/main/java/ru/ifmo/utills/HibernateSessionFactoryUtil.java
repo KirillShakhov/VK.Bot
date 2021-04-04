@@ -1,4 +1,4 @@
-package ru.ifmo;
+package ru.ifmo.utills;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

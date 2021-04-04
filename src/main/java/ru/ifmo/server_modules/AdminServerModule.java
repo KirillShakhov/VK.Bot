@@ -1,25 +1,20 @@
-package ru.ifmo.command_modules;
+package ru.ifmo.server_modules;
 
 import ru.ifmo.models.Message;
-import ru.ifmo.models.interfaces.IModule;
+import ru.ifmo.models.interfaces.IServerModule;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
-public class AdminModule implements IModule{
-    HashSet<String> admins = new HashSet<>();
-    private Map<Integer, String> cookies = new HashMap<>();
+public class AdminServerModule implements IServerModule {
 
     @Override
     public Message getAnswer(Message message) {
         if(message.getText().equalsIgnoreCase("/admin")){
-            message.setLastAnswer("/admin");
+            message.setCookie("/admin");
         }
-        if(message.getLastAnswer().equalsIgnoreCase("/admin")){
+        if(message.getCookie().equalsIgnoreCase("/admin")){
             switch (message.getText().toLowerCase()){
                 case "/exit":
-                    message.setLastAnswer("");
+                    message.setCookie("");
                     message.setText("Выход из админ панели");
                     return message;
                 case "/add_server":

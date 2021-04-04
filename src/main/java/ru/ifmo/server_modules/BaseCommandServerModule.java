@@ -1,11 +1,11 @@
-package ru.ifmo.command_modules;
+package ru.ifmo.server_modules;
 
 import ru.ifmo.models.Message;
 import ru.ifmo.models.interfaces.ICommand;
-import ru.ifmo.models.interfaces.IModule;
+import ru.ifmo.models.interfaces.IServerModule;
 import java.util.HashSet;
 
-public class BaseCommandModule implements IModule {
+public class BaseCommandServerModule implements IServerModule {
     HashSet<ICommand> commands = new HashSet<>();
 
     @Override
