@@ -1,5 +1,6 @@
 package ru.ifmo.modules;
 
+import org.apache.logging.log4j.core.jmx.Server;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ru.ifmo.utills.HibernateSessionFactoryUtil;
@@ -62,5 +63,11 @@ public class DataBaseModule {
         //noinspection unchecked
         List<TokenServer> tokenServer = (List<TokenServer>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From TokenServer").list();
         return tokenServer;
+    }
+
+    public static void saveAll() {
+        for(TokenServer server : ServerManagerModule.getServers()){
+            update(server);
+        }
     }
 }

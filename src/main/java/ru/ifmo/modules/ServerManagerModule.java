@@ -34,6 +34,7 @@ public class ServerManagerModule implements Runnable {
     }
 
     public void run() {
+        Runtime.getRuntime().addShutdownHook(new Thread(DataBaseModule::saveAll));
         System.out.println("Running server...");
 //        System.out.println("Loading Modules...");
         //

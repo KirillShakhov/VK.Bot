@@ -18,7 +18,8 @@ public class ConsoleModule implements Runnable {
                 if ("/exit".equals(line)) {
                     System.out.println("Servers down. \\/");
                     System.exit(0);
-                } else if ("/servers".equals(line)) {
+                }
+                else if ("/servers".equals(line)) {
                     System.out.println("Серверов: " + ServerManagerModule.getServers().size());
                     for (TokenServer server : ServerManagerModule.getServers()) {
                         System.out.println(server.toString());

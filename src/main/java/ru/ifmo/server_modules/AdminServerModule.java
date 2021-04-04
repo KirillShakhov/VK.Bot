@@ -3,11 +3,9 @@ package ru.ifmo.server_modules;
 import ru.ifmo.models.Message;
 import ru.ifmo.models.interfaces.IServerModule;
 
-import java.util.Locale;
-
 
 public class AdminServerModule implements IServerModule {
-
+    int i = 0;
     @Override
     public Message getAnswer(Message message) {
         if(message.getText().equalsIgnoreCase("/admin")){
@@ -22,6 +20,10 @@ public class AdminServerModule implements IServerModule {
                 return message;
             } else if ("/add_server".equalsIgnoreCase(message.getText())) {
                 message.setText("В разработке... Введите /exit");
+                i++;
+                return message;
+            } else if ("/i".equalsIgnoreCase(message.getText())) {
+                message.setText("i: " + i++);
                 return message;
             }
             else {
@@ -34,11 +36,14 @@ public class AdminServerModule implements IServerModule {
 
     @Override
     public String getPerformance() {
-        return "";
+        return String.valueOf(i);
     }
 
     @Override
     public void setPerformance(String s) {
+        try {
+            i = Integer.parseInt(s);
+        }catch (Exception ignored){ }
     }
 
     @Override

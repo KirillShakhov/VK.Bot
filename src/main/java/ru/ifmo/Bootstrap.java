@@ -1,6 +1,7 @@
 package ru.ifmo;
 
 import ru.ifmo.modules.ConsoleModule;
+import ru.ifmo.modules.DataBaseModule;
 import ru.ifmo.modules.ServerManagerModule;
 
 import java.util.HashSet;
