@@ -26,6 +26,7 @@ public class DataBaseModule {
     public static void update(TokenServer server) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
+        server.destroy();
         session.merge(server);
         tx1.commit();
         session.close();

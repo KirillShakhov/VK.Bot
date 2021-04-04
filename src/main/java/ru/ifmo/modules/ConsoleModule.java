@@ -1,5 +1,6 @@
 package ru.ifmo.modules;
 
+import ru.ifmo.models.interfaces.IServerModule;
 import ru.ifmo.server_modules.AdminServerModule;
 import ru.ifmo.server_modules.BaseCommandServerModule;
 import ru.ifmo.server_modules.TestAdminServerModule;
@@ -36,13 +37,22 @@ public class ConsoleModule implements Runnable {
                     try {
                         System.out.println("Введите id:");
                         String id = scanner.nextLine();
-                        TokenServer server = ServerManagerModule.getServerByID(Integer.parseInt(id));
-                        System.out.println("Какой модуль добавить?(admin)");
-                        String module = scanner.nextLine();
-                        if(module.equals("admin")){
-                            server.addModule(new AdminServerModule());
+                        System.out.println("Какой модуль добавить?");
+                        for (IServerModule module : ServerManagerModule.getModules()){
+                            System.out.println(module.toString());
                         }
-                        DataBaseModule.update(server);
+                        String m = scanner.nextLine();
+                        boolean check = false;
+                        for (IServerModule module : ServerManagerModule.getModules()){
+                            if(module.toString().equals(m)){
+                                ServerManagerModule.addModuleToServer(Integer.parseInt(id), module);
+                                check = true;
+                                System.out.println("Модуль добавлен");
+                            }
+                        }
+                        if(!check){
+                            System.out.println("Такого модуля нет");
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -16,6 +16,15 @@ public class ServerManagerModule implements Runnable {
     @Getter
     public static HashSet<IServerModule> modules = new HashSet<>();
 
+    static {
+        //Подключение модулей для дальнейшего использования
+        BaseCommandServerModule b = new BaseCommandServerModule();
+        b.addCommand(message -> message.equalsIgnoreCase("привет")?"Привет!":null);
+        modules.add(b);
+        modules.add(new TestAdminServerModule());
+        modules.add(new AdminServerModule());
+    }
+
     public static void removeServerByID(int id) {
         servers.removeIf(server -> server.getId() == id);
     }
@@ -26,14 +35,8 @@ public class ServerManagerModule implements Runnable {
 
     public void run() {
         System.out.println("Running server...");
-        System.out.println("Loading Modules...");
-        BaseCommandServerModule b = new BaseCommandServerModule();
-        b.addCommand(message -> message.equalsIgnoreCase("привет")?"Привет!":null);
-        modules.add(b);
-        modules.add(new TestAdminServerModule());
-        modules.add(new AdminServerModule());
+//        System.out.println("Loading Modules...");
         //
-
         loading_database();
         System.out.println("Servers starts. /\\");
 
@@ -76,5 +79,10 @@ public class ServerManagerModule implements Runnable {
         }
         servers.add(server);
         return true;
+    }
+    public static void addModuleToServer(int id, IServerModule module){
+        TokenServer server = ServerManagerModule.getServerByID(id);
+        server.addModule(module);
+        DataBaseModule.update(server);
     }
 }
