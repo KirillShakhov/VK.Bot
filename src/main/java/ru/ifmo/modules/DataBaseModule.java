@@ -15,6 +15,7 @@ public class DataBaseModule {
     }
 
     public static void save(TokenServer server) {
+        //Work
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         server.destroy();
@@ -24,6 +25,7 @@ public class DataBaseModule {
     }
 
     public static void update(TokenServer server) {
+        //Work
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         server.destroy();
@@ -41,6 +43,7 @@ public class DataBaseModule {
     }
 
     public static void deleteById(int id) {
+        //Work
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
         TokenServer tokenServer = new TokenServer();
@@ -55,6 +58,7 @@ public class DataBaseModule {
     }
 
     public static List<TokenServer> findAll() {
+        //Work
         //noinspection unchecked
         List<TokenServer> tokenServer = (List<TokenServer>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From TokenServer").list();
         return tokenServer;

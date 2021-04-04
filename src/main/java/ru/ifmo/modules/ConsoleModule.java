@@ -1,7 +1,6 @@
 package ru.ifmo.modules;
 
 import ru.ifmo.models.interfaces.IServerModule;
-import ru.ifmo.server_modules.AdminServerModule;
 import ru.ifmo.server_modules.BaseCommandServerModule;
 import ru.ifmo.server_modules.TestAdminServerModule;
 import ru.ifmo.models.TokenServer;

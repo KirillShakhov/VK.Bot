@@ -83,19 +83,25 @@ public class TokenServer {
 
     public void execute() throws DontGetMessage {
         Message message = requestModule.getMessage();
-        if(message != null) {
-            if (cookies.get(message.getPeerId()) != null) message.setCookie(cookies.get(message.getPeerId()));
-            else message.setCookie("");
-            Executors.newCachedThreadPool().execute(() -> requestModule.sendMessage(getAnswer(message)));
-            cookies.put(message.getPeerId(), message.getCookie());
-        }
+        if(message != null) {Executors.newCachedThreadPool().execute(() -> requestModule.sendMessage(getAnswer(message))); }
     }
 
     Message getAnswer(Message message){
         Message answer = null;
+
+        if (cookies.get(message.getPeerId()) == null) {
+            message.setCookie("");
+            cookies.put(message.getPeerId(), "");
+        }
+
+        message.setCookie(cookies.get(message.getPeerId()));
+
         for(IServerModule module : modules){
             answer = module.getAnswer(message);
         }
+        // Сохранение cookie
+        cookies.put(message.getPeerId(), message.getCookie());
+
         if (answer != null) return answer;
         else{
             message.setText("Неизвестная команда, введите /help");
